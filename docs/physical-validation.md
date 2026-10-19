@@ -1,6 +1,6 @@
 # Physical desktop validation
 
-The [independent capture/AEC fixture](https://github.com/kiarina/labs/tree/4a77acf2a4e3bf89695508d47253da89b620c3ea/2026/10/20/flutter-fork-external-media-aec) uses this package's public fork
+The [independent capture/AEC fixture](https://github.com/kiarina/labs/tree/5894f2c032dda1f1b28a07f6d6a4a5bc7f85d7c4/2026/10/20/flutter-fork-external-media-aec) uses this package's public fork
 API with real camera + record input, standalone caller-owned AEC and an independent
 silent receiver. Current tested consumer pins are bridge8c8ebe2/fork4477798,
 Windows SDK20261020.1. See its pins/source-identity record for the byte-identical
