@@ -1,6 +1,6 @@
 name: flutter_webrtc_external_media
 description: Bounded caller-owned PCM and video input for an external-media Flutter WebRTC fork.
-version: 0.1.0-dev.1
+version: 0.1.0-dev.2
 publish_to: none
 environment:
   sdk: '>=3.3.0 <4.0.0'

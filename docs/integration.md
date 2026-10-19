@@ -27,7 +27,9 @@ native bound is additional to the bridge queue and is not a latency promise.
 The source starts muted. Await `setSending(true)` before feeding media. Stop
 immediately rejects new input, discards queued/partial old data, waits for the
 in-flight call and flushes/mutes. It cannot retract already encoded/RTP media.
-Rapid stop/start operations are serialized and guarded by generations. Ending a
+Rapid stop/start operations are serialized and guarded by generations. Repeated
+requests for the same target share the current operation and preserve partial/
+queued media; only a real state transition flushes. Ending a
 session also requires caller-owned sender detach/peer close. One source per
 factory is currently supported. Do not dispose its underlying stream separately.
 
@@ -47,7 +49,7 @@ not itself an echo canceller: feed it to the caller-owned processing pipeline.
 
 ## Validation boundaries
 
-Ten bridge tests cover gating, owned buffers, bounded overload, stop/resume races,
+Thirteen bridge tests cover gating, owned buffers, bounded overload, stop/resume races,
 video conversion, timestamp rejection and cleanup. The fork has twenty Dart tests.
 macOS debug and Windows x64 release native builds and source smokes pass.
 The Windows smoke loaded the pinned DLL SHA256

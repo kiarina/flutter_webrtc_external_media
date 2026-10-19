@@ -35,7 +35,8 @@ class ExternalMediaBridge {
   final _errors = StreamController<Object>.broadcast();
   Uint8List _remainder = Uint8List(0);
   _VideoPacket? _video;
-  Future<void>? _drainFuture, _disposeFuture;
+  Future<void>? _drainFuture, _disposeFuture, _gateFuture;
+  bool? _gateTarget;
   Future<void> _control = Future.value();
   bool _sending = false, _disposed = false, _faulted = false;
   int _generation = 0, _lastTimestamp = -1;
@@ -107,13 +108,16 @@ class ExternalMediaBridge {
 
   /// False immediately rejects new data. The returned barrier drains any already
   /// in-flight native call before flushing and muting tracks. No queued old PCM
-  /// survives a stop/start. Detach peer senders as well when ending a session.
+  /// survives a stop/start. Repeated same-target requests share their operation
+  /// and preserve queued/partial media. Detach senders when ending a session.
   Future<void> setSending(bool enabled) {
     _check();
+    if (_gateTarget == enabled) return _gateFuture ?? Future<void>.value();
+    _gateTarget = enabled;
     _sending = false;
     final generation = ++_generation;
     _clear();
-    return _serial(() async {
+    return _gateFuture = _serial(() async {
       _check();
       try {
         await _drainFuture;

@@ -17,7 +17,7 @@ class FakeTransport implements ExternalMediaTransport {
   @override
   final stream = FakeStream();
   final audio = <Uint8List>[], video = <Uint8List>[];
-  Completer<void>? hold;
+  Completer<void>? hold, holdFlush;
   bool fail = false, failFlush = false;
   int flushed = 0, disposed = 0;
   @override
@@ -43,6 +43,7 @@ class FakeTransport implements ExternalMediaTransport {
   @override
   Future<void> flush() async {
     flushed++;
+    await holdFlush?.future;
     if (failFlush) throw StateError("native flush rejected");
   }
 
@@ -56,6 +57,52 @@ class FakeTransport implements ExternalMediaTransport {
 
 Future<void> tick() => Future<void>.delayed(Duration.zero);
 void main() {
+  test('repeated enabled state preserves partial audio and does not flush',
+      () async {
+    final t = FakeTransport();
+    final b = await ExternalMediaBridge.create(transport: t);
+    await b.setSending(true);
+    await b.addAudio(Uint8List(400)..fillRange(0, 400, 7));
+    await b.setSending(true);
+    await b.addAudio(Uint8List(560));
+    expect(t.flushed, 1);
+    expect(t.audio, hasLength(1));
+    expect(t.audio.single.take(400), everyElement(7));
+    await b.dispose();
+  });
+  test('repeated enabled state preserves queued audio and video', () async {
+    final t = FakeTransport()..hold = Completer<void>();
+    final b = await ExternalMediaBridge.create(transport: t);
+    await b.setSending(true);
+    final a = b.addAudio(Uint8List(960));
+    await tick();
+    final queued = b.addAudio(Uint8List(960));
+    final video = b.addVideo(Uint8List(4), width: 1, height: 1, timestampUs: 1);
+    final same = b.setSending(true);
+    t.hold!.complete();
+    await a;
+    await same;
+    expect(await queued, true);
+    expect(await video, true);
+    expect(t.flushed, 1);
+    expect(t.audio, hasLength(2));
+    expect(t.video, hasLength(1));
+    await b.dispose();
+  });
+  test('duplicate pending requests coalesce without losing opposite request',
+      () async {
+    final t = FakeTransport()..holdFlush = Completer<void>();
+    final b = await ExternalMediaBridge.create(transport: t);
+    final on = b.setSending(true);
+    await tick();
+    final sameOn = b.setSending(true);
+    final off = b.setSending(false), sameOff = b.setSending(false);
+    t.holdFlush!.complete();
+    await Future.wait([on, sameOn, off, sameOff]);
+    expect(b.sending, false);
+    expect(t.flushed, 2);
+    await b.dispose();
+  });
   test('failed gate flush faults the source and cannot resume stale media',
       () async {
     final t = FakeTransport(),
