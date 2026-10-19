@@ -13,7 +13,10 @@ classes. Keep provider authentication and application session state above it.
 - Video: BGRA8888 or RGBA8888, optional padded row stride, up to 1920x1080.
   The bridge copies/packs input before asynchronous native submission. Caller
   timestamps must increase for the whole source lifetime, including device changes.
-- Windows uses native frame-arrival timestamps; macOS honors caller timestamps.
+- Windows uses native frame-arrival timestamps; macOS honors caller timestamps. The macOS native input queue has a 200-ms
+limit to tolerate approximately 100-ms recorder bursts plus scheduling jitter;
+its overflow/inactive/flush counters expose every discard separately. This
+native bound is additional to the bridge queue and is not a latency promise.
   `videoTimestampSource` reports this difference.
 - Audio has at most ten queued 10-ms blocks by default plus one in flight. On
   overload, oldest queued blocks drop. Video keeps only the latest queued frame
