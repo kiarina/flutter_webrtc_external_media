@@ -44,7 +44,7 @@ not itself an echo canceller: feed it to the caller-owned processing pipeline.
 
 ## Validation boundaries
 
-Nine bridge tests cover gating, owned buffers, bounded overload, stop/resume races,
+Ten bridge tests cover gating, owned buffers, bounded overload, stop/resume races,
 video conversion, timestamp rejection and cleanup. The fork has twenty Dart tests.
 macOS debug and Windows x64 release native builds and source smokes pass.
 The Windows smoke loaded the pinned DLL SHA256

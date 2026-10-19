@@ -18,7 +18,7 @@ class FakeTransport implements ExternalMediaTransport {
   final stream = FakeStream();
   final audio = <Uint8List>[], video = <Uint8List>[];
   Completer<void>? hold;
-  bool fail = false;
+  bool fail = false, failFlush = false;
   int flushed = 0, disposed = 0;
   @override
   bool get hasRenderReference => false;
@@ -43,6 +43,7 @@ class FakeTransport implements ExternalMediaTransport {
   @override
   Future<void> flush() async {
     flushed++;
+    if (failFlush) throw StateError("native flush rejected");
   }
 
   @override
@@ -55,6 +56,21 @@ class FakeTransport implements ExternalMediaTransport {
 
 Future<void> tick() => Future<void>.delayed(Duration.zero);
 void main() {
+  test('failed gate flush faults the source and cannot resume stale media',
+      () async {
+    final t = FakeTransport(),
+        bridge = await ExternalMediaBridge.create(transport: FakeTransport());
+    await bridge.dispose();
+    final b = await ExternalMediaBridge.create(transport: t);
+    await b.setSending(true);
+    t.failFlush = true;
+    await expectLater(b.setSending(false), throwsStateError);
+    expect(b.sending, false);
+    expect(() => b.setSending(true), throwsStateError);
+    await expectLater(b.addAudio(Uint8List(960)), throwsStateError);
+    await b.dispose();
+    expect(t.disposed, 1);
+  });
   test('gated data is discarded and never replayed on resume', () async {
     final t = FakeTransport(),
         b = await ExternalMediaBridge.create(transport: FakeTransport());

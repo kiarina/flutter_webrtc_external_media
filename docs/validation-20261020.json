@@ -4,7 +4,7 @@
   "fork": "0c2322e9b6b503d17cefbf5f76b71d13f6bff81d",
   "dartTests": {
     "fork": 20,
-    "bridge": 9
+    "bridge": 10
   },
   "macos": {
     "errors": [],

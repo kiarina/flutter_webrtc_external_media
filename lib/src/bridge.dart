@@ -115,13 +115,25 @@ class ExternalMediaBridge {
     _clear();
     return _serial(() async {
       _check();
-      await _drainFuture;
-      await _transport.flush().timeout(timeout);
-      if (generation == _generation) {
-        for (final track in stream.getTracks()) {
-          track.enabled = enabled;
+      try {
+        await _drainFuture;
+        _check();
+        await _transport.flush().timeout(timeout);
+        if (generation == _generation) {
+          for (final track in stream.getTracks()) {
+            track.enabled = enabled;
+          }
+          _sending = enabled;
         }
-        _sending = enabled;
+      } catch (error) {
+        if (!_faulted) {
+          _faulted = true;
+          _sending = false;
+          _generation++;
+          _clear();
+          _errors.add(error);
+        }
+        rethrow;
       }
     });
   }
