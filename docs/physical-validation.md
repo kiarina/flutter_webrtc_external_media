@@ -34,3 +34,27 @@ are not bundled by this bridge or automatically supplied by stock record_windows
 Applications must own/adapt that processing backend without importing a lab path.
 Keep camera enableAudio:false. New-peer reconnect, real product analysis load,
 permission/device changes and long sessions remain separate validation gates.
+
+
+## Idempotent-gate follow-up on macOS
+
+The [Mac continuity fixture](https://github.com/kiarina/labs/tree/6e80090/2026/10/20/flutter-macos-doubletalk-dropout)
+uses bridge9f5e2da (0.1.0-dev.2) with the same fork4477798. Repeated same-target
+setSending calls preserve queued/partial media and no longer flush the native
+source. The caller fixture also avoids resetting its own capture generation on
+repeated requests. Three regression tests fail before the bridge change; all13
+pass afterward with focused analysis clean.
+
+Real speech with built-in microphone/speaker keeps camera/record starts1 and SDK
+input0, with a separate SDK-positive sensitivity control detecting input1.
+Capture/DSP continues through sender-off and reception resumes. Native queue drops
+and render-reference drops0; PCM conservation is exact. Double-talk1 has0 native
+underflows, double-talk2 has4 near onset and0 in the measured interior. Near-only
+still has a10ms interior underflow. This is a short run, not universal starvation
+elimination. Human listening acceptance is pending. The baseline AEC/gain is
+unchanged; offline gain candidates are not selected.
+
+A known-near automatic probe still misses the strict short-window attenuation and
+near-only correlation criteria. Do not describe this follow-up as an all-criteria
+AEC improvement or infer human quality from counters alone. No new Windows
+physical test of dev.2 was performed; its earlier dev.1 evidence remains separate.
