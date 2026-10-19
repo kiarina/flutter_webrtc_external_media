@@ -60,6 +60,7 @@ progress (105600 to 227040 samples) on the tested speaker. Packet counters alone
 do not demonstrate speaker/PCM success. See [recorded counts](validation-20261020.json).
 Physical camera/record and caller-owned AEC have now been exercised in the
 [separate fixture](physical-validation.md). Acquisition/gates and SDK microphone
-ownership pass there, but Mac slight double-talk loss and Windows peaks remain.
+ownership pass there. The Mac dev.2 continuity follow-up has successful short-run
+human listening, while strict synthetic criteria and Windows peaks remain.
 It does not establish production processing ownership, new-peer reconnection,
 long-duration/device/permission behavior or all-platform acceptance.

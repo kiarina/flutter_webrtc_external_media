@@ -38,7 +38,7 @@ permission/device changes and long sessions remain separate validation gates.
 
 ## Idempotent-gate follow-up on macOS
 
-The [Mac continuity fixture](https://github.com/kiarina/labs/tree/6e80090/2026/10/20/flutter-macos-doubletalk-dropout)
+The [Mac continuity fixture](https://github.com/kiarina/labs/tree/750cf49/2026/10/20/flutter-macos-doubletalk-dropout)
 uses bridge9f5e2da (0.1.0-dev.2) with the same fork4477798. Repeated same-target
 setSending calls preserve queued/partial media and no longer flush the native
 source. The caller fixture also avoids resetting its own capture generation on
@@ -51,7 +51,9 @@ Capture/DSP continues through sender-off and reception resumes. Native queue dro
 and render-reference drops0; PCM conservation is exact. Double-talk1 has0 native
 underflows, double-talk2 has4 near onset and0 in the measured interior. Near-only
 still has a10ms interior underflow. This is a short run, not universal starvation
-elimination. Human listening acceptance is pending. The baseline AEC/gain is
+elimination. The participant reports no concerning missing words, pumping or echo in four
+receiver clips. This validates the short Mac trial; it neither proves sole cause
+of earlier loss nor a controlled paired perceptual gain. The baseline AEC/gain is
 unchanged; offline gain candidates are not selected.
 
 A known-near automatic probe still misses the strict short-window attenuation and
