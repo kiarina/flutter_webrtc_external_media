@@ -1,0 +1,18 @@
+name: flutter_webrtc_external_media
+description: Bounded caller-owned PCM and video input for an external-media Flutter WebRTC fork.
+version: 0.1.0-dev.1
+publish_to: none
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.22.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc:
+    git:
+      url: https://github.com/kiarina/flutter-webrtc.git
+      ref: 0c2322e9b6b503d17cefbf5f76b71d13f6bff81d
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

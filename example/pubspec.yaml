@@ -1,0 +1,18 @@
+name: external_media_example
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc_external_media:
+    path: ../
+  flutter_webrtc:
+    git:
+      url: https://github.com/kiarina/flutter-webrtc.git
+      ref: 0c2322e9b6b503d17cefbf5f76b71d13f6bff81d
+dev_dependencies:
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true

@@ -1,0 +1,103 @@
+{
+  "mode": "synthetic-zero-PCM-and-generated-video",
+  "physicalCapture": false,
+  "fork": "0c2322e9b6b503d17cefbf5f76b71d13f6bff81d",
+  "dartTests": {
+    "fork": 20,
+    "bridge": 9
+  },
+  "macos": {
+    "errors": [],
+    "first": [
+      {
+        "framesDecoded": 14,
+        "packetsReceived": 14,
+        "kind": "video",
+        "packetsLost": 0
+      },
+      {
+        "packetsReceived": 222,
+        "kind": "audio",
+        "totalSamplesReceived": 212160,
+        "packetsLost": 0
+      }
+    ],
+    "afterResume": [
+      {
+        "framesDecoded": 29,
+        "packetsReceived": 29,
+        "kind": "video",
+        "packetsLost": 0
+      },
+      {
+        "packetsReceived": 344,
+        "kind": "audio",
+        "totalSamplesReceived": 344160,
+        "packetsLost": 0
+      }
+    ],
+    "renderReferenceBytes": 690240,
+    "stats": {
+      "sending": false,
+      "faulted": false,
+      "queuedAudioFrames": 0,
+      "maxQueuedAudioFrames": 10,
+      "partialAudioBytes": 0,
+      "audioFramesSubmitted": 300,
+      "audioFramesDropped": 0,
+      "videoFramesSubmitted": 30,
+      "videoFramesDropped": 0,
+      "bytesDiscardedWhileGated": 960,
+      "native": {
+        "renderReferenceDroppedBytes": 0,
+        "speakerRunning": true,
+        "captureUnderflows": 389,
+        "captureDroppedBytes": 0,
+        "renderSamples": 345600,
+        "audioBlocks": 689,
+        "videoFrames": 30
+      }
+    }
+  },
+  "limitations": [
+    "No physical camera/microphone integration or capture ownership trace on this new bridge",
+    "Silence is not a speech/AEC intelligibility test",
+    "Mac capture underflows include intentionally gated periods before/between submissions",
+    "Windows default output initially received RTP but decoded no audio; selected-output result tracked separately",
+    "Android/iOS/Web external-source backends are unimplemented"
+  ],
+  "windowsX64": {
+    "errors": [],
+    "first": [
+      {
+        "kind": "audio",
+        "packetsReceived": 75,
+        "totalSamplesReceived": 105600
+      },
+      {
+        "kind": "video",
+        "packetsReceived": 15,
+        "framesDecoded": 15
+      }
+    ],
+    "afterResume": [
+      {
+        "kind": "audio",
+        "packetsReceived": 150,
+        "totalSamplesReceived": 227040
+      },
+      {
+        "kind": "video",
+        "packetsReceived": 30,
+        "framesDecoded": 30
+      }
+    ],
+    "audioFramesSubmitted": 300,
+    "videoFramesSubmitted": 30,
+    "audioFramesDropped": 0,
+    "videoFramesDropped": 0,
+    "gatedInputAccepted": false,
+    "output": "explicit selected speaker after peer creation",
+    "sdkDllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740"
+  }
+}
