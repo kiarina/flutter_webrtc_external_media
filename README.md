@@ -13,7 +13,7 @@ explicitly unsupported pending backend work. This is a development Git package,
 not a pub.dev release. `pubspec.yaml` pins the compatible Flutter fork commit;
 Windows also requires the matching SDK installed by that fork. Do not substitute
 the official DLL or rely on a moving branch. See [integration](docs/integration.md)
-for contracts and validation limits.
+for contracts and validation limits, and [physical desktop results](docs/physical-validation.md).
 
 ## Usage
 
