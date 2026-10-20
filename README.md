@@ -34,6 +34,21 @@ Use one source for one group of senders with the same gate. This gate affects al
 peers sharing the stream; it is not an independent privacy gate per conversation.
 Applications own permission UI, capture lifetime and cancellation of input feeds.
 
+## Received audio
+
+`ReceivedAudio.attach(track)` uses the fork's `RTCRemoteAudioTap` to take the
+decoded PCM of a remote audio track (before the playout mixer volume) and emits
+it as 48 kHz mono PCM16. By default the native playout of that track is
+silenced while the SDK keeps decoding. Playing, mixing, voice conversion and
+echo cancellation stay with the caller; whatever the caller plays is its own
+render reference. Detach to restore native playout.
+
+```dart
+final received = await ReceivedAudio.attach(event.track);
+received.pcm.listen(myPlayer.push);   // 48 kHz mono PCM16 chunks
+await received.detach();
+```
+
 ## Development
 
 Run `flutter test` and `flutter analyze lib test`. The `example` is a native

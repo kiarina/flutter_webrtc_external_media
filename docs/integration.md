@@ -47,6 +47,21 @@ The plugin output selector is unsupported in this macOS mode. Reference drops
 and capture underflows are exposed by native statistics. A render reference is
 not itself an echo canceller: feed it to the caller-owned processing pipeline.
 
+## Received audio
+
+`ReceivedAudio` is device-free like the input side. It wraps the fork's public
+`RTCRemoteAudioTap` (Windows/macOS): the native sink runs on the SDK audio
+thread, never waits (try-lock into a bounded 1-s buffer, drops counted as
+`contendedFrames`/`overflowFrames`), and a delivery thread posts PCM every
+~10-20 ms. The bridge down-mixes to mono and linearly resamples to 48 kHz;
+`stats()` combines native and bridge counters. Silencing native playout sets
+the track volume to 0 (restored on detach: previous value on macOS, 1 on
+Windows). The tap does not own a speaker, mixer or AEC.
+
+The Dart hop adds latency and jitter: in labs 2026/10/21/flutter-remote-audio-tap-playout the received-to-played
+median grew from 27 to 41 ms (max 110 ms) with an application FIFO primed at
+40 ms. Applications should buffer before playing.
+
 ## Validation boundaries
 
 Thirteen bridge tests cover gating, owned buffers, bounded overload, stop/resume races,
