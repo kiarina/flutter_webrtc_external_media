@@ -8,8 +8,8 @@ by the application.
 
 ## Status and dependencies
 
-The initial backend supports Windows x64 and macOS. Android, iOS and Web are
-explicitly unsupported pending backend work. This is a development Git package,
+The backend supports Windows x64, macOS and iOS. Android and Web are explicitly
+unsupported pending backend work. This is a development Git package,
 not a pub.dev release. `pubspec.yaml` pins the compatible Flutter fork commit;
 Windows also requires the matching SDK installed by that fork. Do not substitute
 the official DLL or rely on a moving branch. See [integration](docs/integration.md)

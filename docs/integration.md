@@ -41,16 +41,17 @@ idempotent. Capture remains with the caller throughout these operations.
 
 Windows keeps native WebRTC speaker output and requires an external selected-
 endpoint loopback reference adapter. `hasRenderReference` is false on Windows.
-macOS uses an output-only custom audio device following system default output;
+macOS and iOS use an output-only custom audio device following the default output
+(on iOS the caller owns the audio session and the device leaves it alone);
 its bounded `renderReference` stream returns PCM actually supplied to that output.
-The plugin output selector is unsupported in this macOS mode. Reference drops
+The plugin output selector is unsupported in this mode. Reference drops
 and capture underflows are exposed by native statistics. A render reference is
 not itself an echo canceller: feed it to the caller-owned processing pipeline.
 
 ## Received audio
 
 `ReceivedAudio` is device-free like the input side. It wraps the fork's public
-`RTCRemoteAudioTap` (Windows/macOS): the native sink runs on the SDK audio
+`RTCRemoteAudioTap` (Windows/macOS/iOS): the native sink runs on the SDK audio
 thread, never waits (try-lock into a bounded 1-s buffer, drops counted as
 `contendedFrames`/`overflowFrames`), and a delivery thread posts PCM every
 ~10-20 ms. The bridge down-mixes to mono and linearly resamples to 48 kHz;
