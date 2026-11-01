@@ -11,7 +11,7 @@ dependencies:
   flutter_webrtc:
     git:
       url: https://github.com/kiarina/flutter-webrtc.git
-      ref: 8302df44beecf643dfd73cf1cb4e2cdd68293519
+      ref: f55ca6688fb89f4c6c08a2541ffddc680978c38f
 dev_dependencies:
   flutter_test:
     sdk: flutter
